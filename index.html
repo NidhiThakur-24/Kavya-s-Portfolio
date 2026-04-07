@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kavya Thakur — Biomedical Engineer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#F8F4EC',
+            'cream-dark': '#EDE8DC',
+            navy: '#0D2B4E',
+            blue: {
+              primary: '#1A5FA8',
+              light: '#3B82C4',
+              pale: '#D6E8F7',
+              muted: '#E8F2FB',
+            }
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background-color: #F8F4EC; color: #0D2B4E; }
+
+    /* Nav underline animation */
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: #1A5FA8; transition: width 0.3s ease; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Section fade-in on scroll */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* Skill bar animation */
+    .skill-bar { width: 0%; transition: width 1s ease; }
+
+    /* Journey timeline */
+    .timeline-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 28px;
+      bottom: -28px;
+      width: 2px;
+      background: linear-gradient(to bottom, #1A5FA8, #D6E8F7);
+    }
+
+    /* Hero subtle pattern */
+    .hero-pattern {
+      background-color: #0D2B4E;
+      background-image: radial-gradient(circle at 20% 50%, rgba(26,95,168,0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(59,130,196,0.2) 0%, transparent 40%);
+    }
+
+    /* Card hover */
+    .project-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(13,43,78,0.12); }
+
+    /* Blob animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    .floating { animation: float 5s ease-in-out infinite; }
+
+    /* Journey card active */
+    .journey-card.active { border-color: #1A5FA8; background: #E8F2FB; }
+    .journey-dot.active { background: #1A5FA8; box-shadow: 0 0 0 4px #D6E8F7; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F8F4EC; }
+    ::-webkit-scrollbar-thumb { background: #1A5FA8; border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-cream">
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-cream/90 backdrop-blur-sm border-b border-blue-pale">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <span class="font-display font-600 text-navy text-lg tracking-wide">KT<span class="text-blue-primary">.</span></span>
+      <div class="hidden md:flex items-center gap-8 text-sm font-body text-navy/70">
+        <a href="#about"    class="nav-link hover:text-navy transition-colors">About</a>
+        <a href="#skills"   class="nav-link hover:text-navy transition-colors">Skills</a>
+        <a href="#projects" class="nav-link hover:text-navy transition-colors">Projects</a>
+        <a href="#journey"  class="nav-link hover:text-navy transition-colors">Journey</a>
+        <a href="#contact"  class="nav-link hover:text-navy transition-colors">Contact</a>
+      </div>
+      <a href="#contact" class="hidden md:inline-block bg-blue-primary text-white text-sm px-5 py-2 rounded-full hover:bg-blue-light transition-colors">
+        Say Hello →
+      </a>
+      <!-- Mobile hamburger -->
+      <button id="menu-btn" class="md:hidden text-navy">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-blue-pale px-6 py-4 flex flex-col gap-4 text-sm text-navy/70">
+      <a href="#about"    onclick="closeMenu()">About</a>
+      <a href="#skills"   onclick="closeMenu()">Skills</a>
+      <a href="#projects" onclick="closeMenu()">Projects</a>
+      <a href="#journey"  onclick="closeMenu()">Journey</a>
+      <a href="#contact"  onclick="closeMenu()">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero-pattern min-h-screen flex items-center justify-center pt-16 overflow-hidden relative">
+    <!-- Decorative circles -->
+    <div class="absolute top-24 right-16 w-64 h-64 rounded-full border border-blue-light/20 floating" style="animation-delay:0s"></div>
+    <div class="absolute bottom-24 left-8 w-40 h-40 rounded-full border border-blue-light/10 floating" style="animation-delay:2s"></div>
+
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <!-- Text -->
+      <div class="text-white">
+        <p class="text-blue-light text-sm font-body tracking-widest uppercase mb-4">Biomedical Engineer · VIT Mumbai</p>
+        <h1 class="font-display text-5xl md:text-6xl font-700 leading-tight mb-6">
+          Kavya<br/>
+          <span class="text-blue-light">Thakur</span>
+        </h1>
+        <p class="text-white/70 font-body text-lg leading-relaxed mb-8 max-w-md">
+          First-year Biomedical Engineering student passionate about merging technology with healthcare to build the medical tools of tomorrow.
+        </p>
+        <div class="flex gap-4 flex-wrap">
+          <a href="#projects" class="bg-blue-primary hover:bg-blue-light transition-colors text-white px-7 py-3 rounded-full font-body font-500 text-sm">
+            View My Work →
+          </a>
+          <a href="#contact" class="border border-white/30 hover:border-white/70 transition-colors text-white px-7 py-3 rounded-full font-body text-sm">
+            Get In Touch
+          </a>
+        </div>
+        <!-- Stats -->
+        <div class="flex gap-8 mt-12 pt-8 border-t border-white/10">
+          <div>
+            <p class="font-display text-2xl text-white font-600">2029</p>
+            <p class="text-white/50 text-xs mt-1">Expected Grad</p>
+          </div>
+          <div>
+            <p class="font-display text-2xl text-white font-600">B.Tech</p>
+            <p class="text-white/50 text-xs mt-1">Biomedical Engg</p>
+          </div>
+          <div>
+            <p class="font-display text-2xl text-white font-600">VIT</p>
+            <p class="text-white/50 text-xs mt-1">Mumbai</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avatar card -->
+      <div class="flex justify-center md:justify-end">
+        <div class="relative">
+          <div class="w-72 h-72 rounded-3xl bg-blue-primary/30 border border-blue-light/30 flex items-center justify-center">
+            <!-- Placeholder initials avatar -->
+            <div class="w-56 h-56 rounded-2xl bg-blue-pale flex items-center justify-center">
+              <span class="font-display text-6xl text-navy font-700">KT</span>
+            </div>
+          </div>
+          <!-- Floating badge -->
+          <div class="absolute -bottom-4 -left-4 bg-cream text-navy px-4 py-2 rounded-xl shadow-lg border border-cream-dark text-sm font-body">
+            🩺 Future Biomedical Innovator
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="py-24 bg-cream fade-in">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="text-blue-primary text-sm tracking-widest uppercase font-body mb-3">Who I Am</p>
+          <h2 class="font-display text-4xl text-navy font-700 mb-6">About Me</h2>
+          <p class="text-navy/70 font-body text-base leading-relaxed mb-5">
+            I'm Kavya, a first-year Biomedical Engineering student at VIT Mumbai (Batch 2025–2029). I'm fascinated by the intersection of engineering and medicine — how technology can make healthcare more precise, accessible, and human.
+          </p>
+          <p class="text-navy/70 font-body text-base leading-relaxed mb-8">
+            Outside academics, I'm an active singer, kabaddi and badminton player, and a community volunteer. I believe that a curious mind and a team-first attitude go further than any single skill.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <span class="bg-blue-muted text-blue-primary px-4 py-1.5 rounded-full text-sm font-body">🎵 Singer</span>
+            <span class="bg-blue-muted text-blue-primary px-4 py-1.5 rounded-full text-sm font-body">🏸 Badminton</span>
+            <span class="bg-blue-muted text-blue-primary px-4 py-1.5 rounded-full text-sm font-body">🤝 Volunteer</span>
+            <span class="bg-blue-muted text-blue-primary px-4 py-1.5 rounded-full text-sm font-body">💡 STEM Enthusiast</span>
+          </div>
+        </div>
+        <!-- Info cards -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-navy text-white p-6 rounded-2xl col-span-2">
+            <p class="text-white/50 text-xs uppercase tracking-wider mb-2">Currently studying</p>
+            <p class="font-display text-xl font-600">Human Anatomy & Physiology · Medical Instrumentation · Biomaterials</p>
+          </div>
+          <div class="bg-blue-pale p-6 rounded-2xl">
+            <p class="font-display text-3xl text-navy font-700">2025</p>
+            <p class="text-navy/60 text-sm mt-1 font-body">Year of Admission</p>
+          </div>
+          <div class="bg-cream-dark p-6 rounded-2xl">
+            <p class="font-display text-3xl text-navy font-700">VIT</p>
+            <p class="text-navy/60 text-sm mt-1 font-body">Mumbai Campus</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills" class="py-24 bg-navy fade-in">
+    <div class="max-w-6xl mx-auto px-6">
+      <p class="text-blue-light text-sm tracking-widest uppercase font-body mb-3">What I Know</p>
+      <h2 class="font-display text-4xl text-white font-700 mb-14">Skills & Tools</h2>
+
+      <div class="grid md:grid-cols-2 gap-16">
+        <!-- Technical skills with bars -->
+        <div>
+          <h3 class="font-body font-500 text-white/60 text-sm uppercase tracking-wider mb-6">Technical</h3>
+          <div class="space-y-6" id="skill-bars">
+            <div>
+              <div class="flex justify-between text-sm font-body text-white mb-2">
+                <span>MATLAB</span><span class="text-blue-light">Beginner</span>
+              </div>
+              <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div class="skill-bar h-full bg-blue-light rounded-full" data-width="30%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm font-body text-white mb-2">
+                <span>Java</span><span class="text-blue-light">Basic</span>
+              </div>
+              <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div class="skill-bar h-full bg-blue-light rounded-full" data-width="25%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm font-body text-white mb-2">
+                <span>MS Excel / PowerPoint</span><span class="text-blue-light">Intermediate</span>
+              </div>
+              <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div class="skill-bar h-full bg-blue-light rounded-full" data-width="60%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm font-body text-white mb-2">
+                <span>Biomedical Fundamentals</span><span class="text-blue-light">Learning</span>
+              </div>
+              <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div class="skill-bar h-full bg-blue-primary rounded-full" data-width="45%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soft skills as cards -->
+        <div>
+          <h3 class="font-body font-500 text-white/60 text-sm uppercase tracking-wider mb-6">Strengths</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="border border-white/10 rounded-xl p-4 hover:border-blue-light/50 transition-colors">
+              <div class="text-2xl mb-2">🎯</div>
+              <p class="text-white font-body text-sm font-500">Leadership</p>
+            </div>
+            <div class="border border-white/10 rounded-xl p-4 hover:border-blue-light/50 transition-colors">
+              <div class="text-2xl mb-2">💬</div>
+              <p class="text-white font-body text-sm font-500">Communication</p>
+            </div>
+            <div class="border border-white/10 rounded-xl p-4 hover:border-blue-light/50 transition-colors">
+              <div class="text-2xl mb-2">🤝</div>
+              <p class="text-white font-body text-sm font-500">Teamwork</p>
+            </div>
+            <div class="border border-white/10 rounded-xl p-4 hover:border-blue-light/50 transition-colors">
+              <div class="text-2xl mb-2">⏱️</div>
+              <p class="text-white font-body text-sm font-500">Time Management</p>
+            </div>
+            <div class="border border-white/10 rounded-xl p-4 hover:border-blue-light/50 transition-colors">
+              <div class="text-2xl mb-2">💡</div>
+              <p class="text-white font-body text-sm font-500">Creative Thinking</p>
+            </div>
+            <div class="border border-white/10 rounded-xl p-4 hover:border-blue-light/50 transition-colors">
+              <div class="text-2xl mb-2">📊</div>
+              <p class="text-white font-body text-sm font-500">Presentations</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects" class="py-24 bg-cream fade-in">
+    <div class="max-w-6xl mx-auto px-6">
+      <p class="text-blue-primary text-sm tracking-widest uppercase font-body mb-3">What I've Built</p>
+      <h2 class="font-display text-4xl text-navy font-700 mb-14">Academic Projects</h2>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="project-card bg-white border border-cream-dark rounded-2xl p-7">
+          <div class="w-10 h-10 bg-blue-muted rounded-xl flex items-center justify-center text-xl mb-5">🧬</div>
+          <p class="text-xs text-blue-primary uppercase tracking-wider font-body mb-2">Biomedical Engineering</p>
+          <h3 class="font-display text-lg text-navy font-600 mb-3">Human Anatomy & Physiology Studies</h3>
+          <p class="text-navy/60 font-body text-sm leading-relaxed">Exploring the structure and function of the human body — foundational knowledge for all biomedical applications.</p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="bg-blue-muted text-blue-primary text-xs px-3 py-1 rounded-full">Anatomy</span>
+            <span class="bg-blue-muted text-blue-primary text-xs px-3 py-1 rounded-full">Physiology</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="project-card bg-white border border-cream-dark rounded-2xl p-7">
+          <div class="w-10 h-10 bg-blue-muted rounded-xl flex items-center justify-center text-xl mb-5">⚙️</div>
+          <p class="text-xs text-blue-primary uppercase tracking-wider font-body mb-2">Programming</p>
+          <h3 class="font-display text-lg text-navy font-600 mb-3">MATLAB in Biomedical Systems</h3>
+          <p class="text-navy/60 font-body text-sm leading-relaxed">Learning programming applications in biomedical signal processing and system modelling using MATLAB.</p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="bg-blue-muted text-blue-primary text-xs px-3 py-1 rounded-full">MATLAB</span>
+            <span class="bg-blue-muted text-blue-primary text-xs px-3 py-1 rounded-full">Signal Processing</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="project-card bg-navy rounded-2xl p-7">
+          <div class="w-10 h-10 bg-blue-primary/30 rounded-xl flex items-center justify-center text-xl mb-5">🏆</div>
+          <p class="text-xs text-blue-light uppercase tracking-wider font-body mb-2">Achievements</p>
+          <h3 class="font-display text-lg text-white font-600 mb-3">Technical Presentations & Seminars</h3>
+          <p class="text-white/50 font-body text-sm leading-relaxed">Active participation in STEM seminars, technical presentations, and cultural & sports events at VIT.</p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="bg-white/10 text-white/80 text-xs px-3 py-1 rounded-full">STEM</span>
+            <span class="bg-white/10 text-white/80 text-xs px-3 py-1 rounded-full">Leadership</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ JOURNEY TRACKER ============ -->
+  <section id="journey" class="py-24 bg-cream-dark fade-in">
+    <div class="max-w-6xl mx-auto px-6">
+      <p class="text-blue-primary text-sm tracking-widest uppercase font-body mb-3">My Path</p>
+      <h2 class="font-display text-4xl text-navy font-700 mb-4">Journey Tracker</h2>
+      <p class="text-navy/60 font-body text-base mb-14 max-w-lg">From where I started to where I'm going — every milestone in my engineering journey.</p>
+
+      <!-- Filter buttons -->
+      <div class="flex gap-3 flex-wrap mb-10" id="journey-filters">
+        <button onclick="filterJourney('all')" class="filter-btn active-filter bg-blue-primary text-white text-sm px-5 py-2 rounded-full font-body transition-all">All</button>
+        <button onclick="filterJourney('education')" class="filter-btn bg-white border border-cream-dark text-navy/70 text-sm px-5 py-2 rounded-full font-body hover:border-blue-primary transition-all">Education</button>
+        <button onclick="filterJourney('achievement')" class="filter-btn bg-white border border-cream-dark text-navy/70 text-sm px-5 py-2 rounded-full font-body hover:border-blue-primary transition-all">Achievements</button>
+        <button onclick="filterJourney('goal')" class="filter-btn bg-white border border-cream-dark text-navy/70 text-sm px-5 py-2 rounded-full font-body hover:border-blue-primary transition-all">Goals</button>
+      </div>
+
+      <!-- Timeline -->
+      <div class="relative" id="timeline">
+
+        <!-- Item 1 -->
+        <div class="timeline-item relative flex gap-6 mb-10" data-category="education">
+          <div class="flex flex-col items-center">
+            <div class="journey-dot w-6 h-6 rounded-full bg-blue-primary border-4 border-cream-dark flex-shrink-0 mt-1 active"></div>
+          </div>
+          <div class="journey-card active flex-1 bg-white border border-blue-primary rounded-2xl p-6">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+              <span class="bg-blue-primary text-white text-xs px-3 py-1 rounded-full font-body">2025</span>
+              <span class="bg-blue-muted text-blue-primary text-xs px-3 py-1 rounded-full font-body">Education</span>
+            </div>
+            <h3 class="font-display text-lg text-navy font-600 mb-2">Admitted to VIT Mumbai</h3>
+            <p class="text-navy/60 font-body text-sm leading-relaxed">Joined B.Tech Biomedical Engineering at VIT Mumbai — the beginning of the journey into healthcare technology.</p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="timeline-item relative flex gap-6 mb-10" data-category="achievement">
+          <div class="flex flex-col items-center">
+            <div class="journey-dot w-6 h-6 rounded-full bg-blue-light border-4 border-cream-dark flex-shrink-0 mt-1"></div>
+          </div>
+          <div class="journey-card flex-1 bg-white border border-cream-dark rounded-2xl p-6">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+              <span class="bg-blue-pale text-blue-primary text-xs px-3 py-1 rounded-full font-body">2025</span>
+              <span class="bg-blue-muted text-blue-primary text-xs px-3 py-1 rounded-full font-body">Achievement</span>
+            </div>
+            <h3 class="font-display text-lg text-navy font-600 mb-2">First Technical Seminar</h3>
+            <p class="text-navy/60 font-body text-sm leading-relaxed">Participated in technical presentations and STEM activities at VIT, building early communication and research skills.</p>
+          </div>
+        </div>
+
+        <!-- Item 3 — In Progress -->
+        <div class="timeline-item relative flex gap-6 mb-10" data-category="education">
+          <div class="flex flex-col items-center">
+            <div class="journey-dot w-6 h-6 rounded-full bg-blue-light border-4 border-cream-dark flex-shrink-0 mt-1"></div>
+          </div>
+          <div class="journey-card flex-1 bg-white border border-cream-dark rounded-2xl p-6">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+              <span class="bg-blue-pale text-blue-primary text-xs px-3 py-1 rounded-full font-body">2025 – 2026</span>
+              <span class="bg-amber-100 text-amber-700 text-xs px-3 py-1 rounded-full font-body">In Progress</span>
+            </div>
+            <h3 class="font-display text-lg text-navy font-600 mb-2">Core Biomedical Curriculum</h3>
+            <p class="text-navy/60 font-body text-sm leading-relaxed">Studying Anatomy & Physiology, Medical Instrumentation, Biomaterials, and Engineering Mathematics. Learning MATLAB for biomedical applications.</p>
+          </div>
+        </div>
+
+        <!-- Item 4 — Goal -->
+        <div class="timeline-item relative flex gap-6 mb-10" data-category="goal">
+          <div class="flex flex-col items-center">
+            <div class="journey-dot w-6 h-6 rounded-full bg-white border-4 border-blue-pale flex-shrink-0 mt-1"></div>
+          </div>
+          <div class="journey-card flex-1 bg-blue-muted border border-blue-pale rounded-2xl p-6 opacity-80">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+              <span class="bg-blue-pale text-blue-primary text-xs px-3 py-1 rounded-full font-body">2026 – 2027</span>
+              <span class="bg-blue-pale text-blue-primary text-xs px-3 py-1 rounded-full font-body">Goal</span>
+            </div>
+            <h3 class="font-display text-lg text-navy font-600 mb-2">First Internship / Research Project</h3>
+            <p class="text-navy/60 font-body text-sm leading-relaxed">Aiming to secure a summer internship at a hospital, medical device company, or research lab to gain hands-on experience.</p>
+          </div>
+        </div>
+
+        <!-- Item 5 — Goal -->
+        <div class="timeline-item relative flex gap-6 mb-10" data-category="goal">
+          <div class="flex flex-col items-center">
+            <div class="journey-dot w-6 h-6 rounded-full bg-white border-4 border-blue-pale flex-shrink-0 mt-1"></div>
+          </div>
+          <div class="journey-card flex-1 bg-blue-muted border border-blue-pale rounded-2xl p-6 opacity-80">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+              <span class="bg-blue-pale text-blue-primary text-xs px-3 py-1 rounded-full font-body">2027 – 2028</span>
+              <span class="bg-blue-pale text-blue-primary text-xs px-3 py-1 rounded-full font-body">Goal</span>
+            </div>
+            <h3 class="font-display text-lg text-navy font-600 mb-2">Major Project & Publication</h3>
+            <p class="text-navy/60 font-body text-sm leading-relaxed">Build a significant final-year project in medical instrumentation or AI in healthcare. Target a conference paper or publication.</p>
+          </div>
+        </div>
+
+        <!-- Item 6 — Goal -->
+        <div class="timeline-item relative flex gap-6" data-category="goal">
+          <div class="flex flex-col items-center">
+            <div class="journey-dot w-6 h-6 rounded-full bg-white border-4 border-blue-pale flex-shrink-0 mt-1"></div>
+          </div>
+          <div class="journey-card flex-1 bg-navy border border-navy rounded-2xl p-6 opacity-80">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+              <span class="bg-blue-primary text-white text-xs px-3 py-1 rounded-full font-body">2029</span>
+              <span class="bg-white/10 text-white text-xs px-3 py-1 rounded-full font-body">Final Goal</span>
+            </div>
+            <h3 class="font-display text-lg text-white font-600 mb-2">Graduate as a Biomedical Engineer</h3>
+            <p class="text-white/50 font-body text-sm leading-relaxed">Complete B.Tech with strong fundamentals, project experience, and a clear direction in medical technology or research.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="py-24 bg-navy fade-in">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="text-blue-light text-sm tracking-widest uppercase font-body mb-4">Let's Connect</p>
+      <h2 class="font-display text-5xl text-white font-700 mb-6">Say Hello</h2>
+      <p class="text-white/60 font-body text-lg leading-relaxed mb-12 max-w-xl mx-auto">
+        Whether it's an opportunity, a collaboration, or just a conversation about biomedical tech — my inbox is open.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-14">
+        <a href="mailto:kavyaXXXX@gmail.com" class="bg-blue-primary hover:bg-blue-light transition-colors text-white px-8 py-4 rounded-full font-body font-500 text-sm">
+          📧 kavyaXXXX@gmail.com
+        </a>
+        <a href="tel:+91XXXXXXXXXX" class="border border-white/20 hover:border-white/50 transition-colors text-white/80 px-8 py-4 rounded-full font-body text-sm">
+          📱 +91 XXXXXXXXXX
+        </a>
+      </div>
+
+      <!-- Social links -->
+      <div class="flex gap-6 justify-center">
+        <a href="https://linkedin.com" target="_blank" class="text-white/40 hover:text-white transition-colors font-body text-sm">LinkedIn →</a>
+        <a href="https://github.com" target="_blank" class="text-white/40 hover:text-white transition-colors font-body text-sm">GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-navy border-t border-white/10 py-8 text-center">
+    <p class="text-white/30 font-body text-sm">© 2025 Kavya Thakur · Built with HTML & Tailwind CSS</p>
+  </footer>
+
+  <!-- ============ JAVASCRIPT ============ -->
+  <script>
+    // Mobile menu
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+    function closeMenu() {
+      document.getElementById('mobile-menu').classList.add('hidden');
+    }
+
+    // Scroll fade-in using IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          // Trigger skill bars when skills section is visible
+          if (e.target.querySelector('#skill-bars') || e.target.id === 'skills') {
+            document.querySelectorAll('.skill-bar').forEach(bar => {
+              bar.style.width = bar.dataset.width;
+            });
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Also trigger skills on scroll into view
+    const skillsSection = document.getElementById('skills');
+    const skillObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        document.querySelectorAll('.skill-bar').forEach(bar => {
+          bar.style.width = bar.dataset.width;
+        });
+      }
+    }, { threshold: 0.3 });
+    skillObserver.observe(skillsSection);
+
+    // Journey filter
+    function filterJourney(category) {
+      // Update button styles
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-primary', 'text-white');
+        btn.classList.add('bg-white', 'text-navy/70', 'border', 'border-cream-dark');
+      });
+      event.target.classList.add('bg-blue-primary', 'text-white');
+      event.target.classList.remove('bg-white', 'text-navy/70', 'border', 'border-cream-dark');
+
+      document.querySelectorAll('.timeline-item').forEach(item => {
+        if (category === 'all' || item.dataset.category === category) {
+          item.style.display = 'flex';
+          item.style.opacity = '1';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
